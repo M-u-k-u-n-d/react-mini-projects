@@ -10,6 +10,7 @@ import {
   Squares2X2Icon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
 
 const menuItems = [
   { name: "Home", icon: <HomeIcon className="w-5 h-5" /> },
@@ -25,8 +26,11 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
+
+  // const isMenuOpen = useSelector((state) => state.app1.isMenuOpen);
+
   return (
-    <div className="w-60 h-screen bg-white border-r p-4 space-y-2">
+    <div className="relative z-10 w-60 h-screen bg-white border-r p-4 space-y-2">
       {menuItems.map((item, index) => (
         <div
           key={index}
