@@ -13,3 +13,11 @@ If you are developing a production application, we recommend using TypeScript wi
 
 
 # Notes for revision
+
+- for using redux toolkit
+- go and see these files
+    - store.js
+    - appSlice.js
+    - Sidebar.js
+    - App.js
+    - Hamburger.jsx
