@@ -46,7 +46,7 @@ const VideoCard = ({ video }) => {
   const views = formatViews(video?.statistics?.viewCount);
 
   return (
-    <div className="w-72 md:w-60 lg:w-64">
+    <div className="w-72 md:w-60 lg:w-64 hover:bg-gray-300 p-2 rounded-md">
       <img
         src={thumbnail}
         alt="Video Thumbnail"

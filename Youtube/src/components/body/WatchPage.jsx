@@ -1,59 +1,95 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { HandThumbUpIcon, HandThumbDownIcon, ShareIcon, ArrowDownTrayIcon, BookmarkIcon } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  HandThumbUpIcon,
+  HandThumbDownIcon,
+  ShareIcon,
+  ArrowDownTrayIcon,
+  BookmarkIcon,
+} from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+
+import VideoCard from "./VideoCard";
+import { YOUTUBE_COMMENTS_API, YOUTUBE_VIDEO_API } from "../../utils/constants";
+import { updateVideo } from "../../utils/appSlice";
+import CommentsList from "./CommentsList";
 
 const WatchPage = () => {
   const [searchParams] = useSearchParams();
   const videoId = searchParams.get("v");
-
   const video = useSelector((state) => state.app1.video);
+  const [videos, setVideos] = useState([]);
 
+  const dispatch = useDispatch();
   const formatViews = (num) => {
-    if (num >= 1_000_000_000) {
+    if (num >= 1_000_000_000)
       return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
-    } else if (num >= 1_000_000) {
+    else if (num >= 1_000_000)
       return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
-    } else if (num >= 1_000) {
+    else if (num >= 1_000)
       return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
-    } else {
-      return num;
-    }
+    else return num;
   };
 
-
   if (!video) return <div>Loading video...</div>;
+
+  useEffect(() => {
+    async function getComments() {
+      const data = await fetch(YOUTUBE_COMMENTS_API + videoId);
+      const json = await data.json();
+      console.log(await json);
+    }
+    getComments();
+  }, []);
+
+  useEffect(() => {
+    async function getData() {
+      const data = await fetch(YOUTUBE_VIDEO_API);
+      const json = await data.json();
+      const arr = json.items;
+      arr.reverse();
+      setVideos(arr);
+    }
+    getData();
+  }, []);
 
   const channelName = video?.snippet?.channelTitle;
   const videoTitle = video?.snippet?.localized?.title;
   const likeCount = formatViews(video?.statistics?.likeCount);
-  const subscriberCount = formatViews(video?.statistics?.viewCount * 5); 
-  console.log(video)
+  const subscriberCount = formatViews(video?.statistics?.viewCount * 5);
 
   return (
-    <div className="p-4 flex flex-col lg:flex-row">
-      {/* Left Column - Video Player and Info */}
-      <div className="flex-1">
-        {/* YouTube Video Player */}
-        <div className="w-full aspect-video mb-4">
+    <div className="flex flex-col lg:flex-row min-h-screen w-[100vw]">
+      {/* Left Half */}
+      <div className="w-[75vw] p-4">
+        {/* Video */}
+        <div className="aspect-video mb-4">
           <iframe
             className="w-full h-full"
-            src={`https://www.youtube.com/embed/${videoId}`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
             title="YouTube video player"
+            allow="autoplay"
             allowFullScreen
           ></iframe>
         </div>
 
-        {/* Video Title */}
+        {/* Title */}
         <h2 className="text-xl font-semibold mb-2">{videoTitle}</h2>
 
-        {/* Channel Info + Subscribe */}
+        {/* Channel Info */}
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-3">
-            <img src="https://yt3.ggpht.com/pZQ5JMD4EOI8TcNYAPTzMexe_fC0CKnb_hYlV4rPfIzmDidF239fH1XKmzkeT30XSg7fxNwc_w=s88-c-k-c0x00ffffff-no-rj" alt="channel logo" className="rounded-full w-10 h-10" />
+            <img
+              src="https://yt3.ggpht.com/pZQ5JMD4EOI8TcNYAPTzMexe_fC0CKnb_hYlV4rPfIzmDidF239fH1XKmzkeT30XSg7fxNwc_w=s88-c-k-c0x00ffffff-no-rj"
+              alt="channel logo"
+              className="rounded-full w-10 h-10"
+            />
             <div>
               <p className="font-medium">{channelName}</p>
-              <p className="text-sm text-gray-500">{subscriberCount} subscribers</p>
+              <p className="text-sm text-gray-500">
+                {subscriberCount} subscribers
+              </p>
             </div>
           </div>
           <button className="bg-red-600 text-white px-4 py-1 rounded-full font-semibold">
@@ -84,32 +120,30 @@ const WatchPage = () => {
           </button>
         </div>
 
-        {/* Comment Section */}
+        {/* Comments Section */}
         <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-2">Comments</h3>
-          <div className="mb-4">
-            <input
-              className="w-full border p-2 rounded"
-              placeholder="Add a public comment..."
-            />
-          </div>
-
-          {/* Example Comment */}
-          <div className="flex items-start space-x-3 mb-4">
-            <img src="https://via.placeholder.com/32" className="rounded-full w-8 h-8" />
-            <div>
-              <p className="font-medium">User123</p>
-              <p>Awesome video! Really helpful 🙌</p>
-            </div>
-          </div>
-
-          {/* More comments can be listed here */}
+          <CommentsList videoId={videoId} />
         </div>
       </div>
 
-      {/* Right Column - (Optional) Suggested Videos */}
-      <div className="lg:w-[30%] mt-8 lg:mt-0 lg:ml-6">
-        {/* You can render suggested videos here */}
+      {/* Right Half */}
+      <div className="w-[35vw] p-4 ">
+        {/* Add suggested videos here */}
+        <div className="p-4 bg-white overflow-y-auto min-h-screen">
+          <h3 className="text-lg font-semibold mb-4">Suggested Videos</h3>
+
+          {videos.map((video, index) => (
+            <Link
+              to={"/watch/?v=" + video.id}
+              key={index}
+              onClick={() => dispatch(updateVideo(video))}
+            >
+              <div className="mb-4">
+                <VideoCard video={video} />
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

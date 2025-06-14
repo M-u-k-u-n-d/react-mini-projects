@@ -10,7 +10,7 @@ const Body = () => {
   const isMenuOpen = useSelector((state) => state.app1.isMenuOpen);
   return (
     <div className=''>
-      <ButtonList/>
+      {/* <ButtonList/> */}
       {
       isMenuOpen && <Sidebar/>
       }
@@ -18,11 +18,11 @@ const Body = () => {
         !isMenuOpen &&
          <div className="w-60 h-screen bg-transparent p-4 space-y-2"></div> 
       }
-      <div className='absolute top-32 z-0'>
+      <div className='absolute top-12 z-0'>
       <Outlet/>
       </div>
     </div>
   )
 }
 
-export default Body
+export default Body;

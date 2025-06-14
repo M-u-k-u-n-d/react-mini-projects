@@ -34,7 +34,7 @@ const MainContainer = () => {
           key={index}
           onClick={() => dispatch(updateVideo(video))}
         >
-          <VideoCard video={video} />
+        <VideoCard video={video} />
         </Link>
       ))}
     </div>

@@ -21,3 +21,9 @@ If you are developing a production application, we recommend using TypeScript wi
     - Sidebar.js
     - App.js
     - Hamburger.jsx
+
+
+- In my searchBar 
+    - implemented debouncing concepts
+    - caching concept 
+    
