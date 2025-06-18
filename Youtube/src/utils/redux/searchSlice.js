@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const searchSlice = createSlice({
     name : 'app2',
     initialState : {},

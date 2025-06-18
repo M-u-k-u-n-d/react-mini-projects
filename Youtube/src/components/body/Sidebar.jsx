@@ -11,7 +11,7 @@ import {
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
 import {useDispatch} from "react-redux";
-import {toggleMenu} from '../../utils/appSlice';
+import {toggleMenu} from '../../utils/redux/appSlice';
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 

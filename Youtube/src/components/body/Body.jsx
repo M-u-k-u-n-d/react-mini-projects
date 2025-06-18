@@ -11,13 +11,13 @@ const Body = () => {
   return (
     <div className=''>
       {/* <ButtonList/> */}
-      {
+      {/* {
       isMenuOpen && <Sidebar/>
-      }
-      {
+      } */}
+      {/* {
         !isMenuOpen &&
          <div className="w-60 h-screen bg-transparent p-4 space-y-2"></div> 
-      }
+      } */}
       <div className='absolute top-12 z-0'>
       <Outlet/>
       </div>

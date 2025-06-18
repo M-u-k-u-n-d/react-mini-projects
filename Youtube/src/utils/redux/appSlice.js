@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"; 
 
 const appSlice = createSlice({
-    name: "app",
+    name: "app1",
     initialState: {
         isMenuOpen: false,
         video : null

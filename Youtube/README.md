@@ -27,3 +27,7 @@ If you are developing a production application, we recommend using TypeScript wi
     - implemented debouncing concepts
     - caching concept 
     
+- TODO --
+    - implement infinite scroll
+    - make mobile responsive
+    - filter active video from video suggestions

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import VideoCard from './VideoCard';
-import { YOUTUBE_VIDEO_API } from '../../utils/constants';
+
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { closedMenu, updateVideo } from '../../utils/appSlice';
+import { closedMenu, updateVideo } from '../../utils/redux/appSlice';
+import { YOUTUBE_VIDEO_API } from '../../utils/constants';
+import { changeContent } from '../../utils/redux/videoSlice';
 
 const MainContainer = () => {
   const [videos, setVideos] = useState([]);
@@ -13,7 +15,9 @@ const MainContainer = () => {
     async function getData() {
       const data = await fetch(YOUTUBE_VIDEO_API);
       const json = await data.json();
-      setVideos(json.items);
+      setVideos(json?.items);
+      dispatch(updateVideo(json?.items));
+      dispatch(changeContent([]));
     }
     getData();
   }, []);
@@ -28,11 +32,10 @@ const MainContainer = () => {
       className="p-4 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 ml-8"
       onClick={handleGlobalClick}
     >
-      {videos.map((video, index) => (
+      {videos?.map((video, index) => (
         <Link
-          to={"/watch/?v=" + video.id}
+          to={"/watch/?v=" + video?.id}
           key={index}
-          onClick={() => dispatch(updateVideo(video))}
         >
         <VideoCard video={video} />
         </Link>

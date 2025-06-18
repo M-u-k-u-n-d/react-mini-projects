@@ -1,6 +1,8 @@
 import React from "react";
 
 const VideoCard = ({ video }) => {
+  // console.log("videocard");
+  // console.log(video)
   const thumbnail = video?.snippet?.thumbnails?.high?.url;
   const title = video?.snippet?.title;
   const channel = video?.snippet?.channelTitle;

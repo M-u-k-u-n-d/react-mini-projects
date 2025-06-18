@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const SearchPageCard = ({ content, videoId }) => {
+  // console.log("SearchPageCard content => ")
+  // console.log(content);
+  
   const { snippet } = content;
   const { title, description, channelTitle, thumbnails } = snippet;
 

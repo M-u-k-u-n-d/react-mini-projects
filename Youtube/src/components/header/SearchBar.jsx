@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { cacheResults } from "../../utils/searchSlice";
-import { changeContent } from "../../utils/videoSlice";
-import { API_KEY } from "../../utils/constants";
+import { cacheResults } from "../../utils/redux/searchSlice";
+import { changeContent } from "../../utils/redux/videoSlice";
+import { API_KEY, SUGGESTED_QUERIES_API, SUGGESTED_VIDEOS_API } from "../../utils/constants";
 import { Link } from "react-router-dom";
 
 const SearchBar = () => {
@@ -13,6 +13,8 @@ const SearchBar = () => {
   const cachedResult = useSelector((state) => state.app2);
   const dispatch = useDispatch();
 
+
+  // all useEffects used for suggestions 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -37,7 +39,7 @@ const SearchBar = () => {
   const fetchSuggestions = async () => {
     try {
       const response = await fetch(
-        `http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${query}`
+        `${SUGGESTED_QUERIES_API}${query}`
       );
       const data = await response.json();
       setSuggestions(data[1]);
@@ -49,21 +51,23 @@ const SearchBar = () => {
 
   const changeVideos = async () => {
     const data = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${query}&type=video&key=${API_KEY}`
+      `${SUGGESTED_VIDEOS_API}${query}&type=video&key=${API_KEY}`
     );
-    const res = await data.json();
-    dispatch(changeContent(res.items));
+    const searchedResultsVideos = await data.json();
+    // console.log(searchedResultsVideos.items)
+    dispatch(changeContent(searchedResultsVideos.items));
   };
 
   return (
-    <div className="relative w-full max-w-xl sm:w-[70vw]" ref={wrapperRef}>
-      <div className="flex items-center w-full relative">
+    <div className="relative w-full max-w-xl sm:w-[70vw]" >
+      <div className="flex items-center w-full relative" >
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search"
           className="w-full py-2 pl-4 pr-20 rounded-l-full bg-gray-200 text-sm sm:text-base border border-gray-400"
+          ref={wrapperRef}
         />
 
         {query && (
