@@ -16,7 +16,7 @@ export const SINGLE_VIDEO_API =
   "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=";
 
 export const SUGGESTED_QUERIES_API =
-  "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+  "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
 export const SUGGESTED_VIDEOS_API =
   "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=";
