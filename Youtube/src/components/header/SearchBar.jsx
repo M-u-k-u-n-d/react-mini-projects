@@ -54,7 +54,7 @@ const SearchBar = () => {
       `${SUGGESTED_VIDEOS_API}${query}&type=video&key=${API_KEY}`
     );
     const searchedResultsVideos = await data.json();
-    // console.log(searchedResultsVideos.items)
+
     dispatch(changeContent(searchedResultsVideos.items));
   };
 
